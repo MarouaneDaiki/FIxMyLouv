@@ -12,14 +12,13 @@
   <header>
     <img class="logo" src="images/logo.png" alt="FML-Logo">
     <h1 class="title">FixMyLouv</h1>
-
-    <div class="search">
-      <input type="text" placeholder="Recherche">
-      <input class="button_header" type="button" value="Recherche">
-    </div>
     <!-- Change en "depliez moi", une fois connecté -->
     <input class="button_header" type="button" value="Connexion" id="connexion">
 
+    <div class="search">
+      <input type="text" placeholder="Recherche" id="input_search">
+      <input type="button" value="🔎" id="button_search">
+    </div>
   </header>
   <hr>
 
@@ -29,13 +28,13 @@
 
       <label for="location">Adresse: </label>
       <textarea name="location" cols="25" rows="5" placeholder="Addresse de l'accident"></textarea>
-      
+
       <label for="accident">Accident: </label>
       <textarea name="accident" placeholder="Expliquez l'accident" cols="25" rows="5" style="height:200px"></textarea>
 
       <button class="report_button" type="submit">Signaler</button>
     </div>
-    
+
   </main>
   <footer></footer>
 </body>
