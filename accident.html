@@ -5,34 +5,37 @@
   <meta charset="utf-8">
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
-
+  <link rel="shortcut icon" href="images/logo.icon">
 </head>
 
 <body>
-  <header class="header">
-    <img src="" alt="LOGO">
+  <header>
+    <img class="logo" src="images/logo.png" alt="FML-Logo">
     <h1 class="title">FixMyLouv</h1>
 
     <div class="search">
       <input type="text" placeholder="Recherche">
-      <input type="button" value="Recherche">
+      <input class="button_header" type="button" value="Recherche">
     </div>
     <!-- Change en "depliez moi", une fois connecté -->
-    <input type="button" value="Connexion" class="connexion">
+    <input class="button_header" type="button" value="Connexion" id="connexion">
 
   </header>
   <hr>
+
   <main>
-    <p>Signaler un accident</p>
-    <p>Description</p>
-    <p>
-      <textarea name="textarea" rows="10" cols="50">Saisir un texte ici.</textarea>
-    </p>
-    <p>Adresse</p>
-    <p>
-      <textarea name="textarea" rows="5" cols="50">Saisir un texte ici.</textarea>
-    </p>
-    <button>S'enregistrer</button>
+    <div class="report">
+      <h2>Signaler un accident</h2>
+
+      <label for="location">Adresse: </label>
+      <textarea name="location" cols="25" rows="5" placeholder="Addresse de l'accident"></textarea>
+      
+      <label for="accident">Accident: </label>
+      <textarea name="accident" placeholder="Expliquez l'accident" cols="25" rows="5" style="height:200px"></textarea>
+
+      <button class="report_button" type="submit">Signaler</button>
+    </div>
+    
   </main>
   <footer></footer>
 </body>

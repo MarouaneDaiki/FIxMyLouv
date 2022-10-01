@@ -1,24 +1,17 @@
-table {
-    width: 50%;
-    border-collapse: collapse;
+/* HEADER: gere le logo, titre, bouton de connexion et recherche sous forme de tableau */
+
+body {
+    font-family: 'Titillium Web', sans-serif;
 }
 
-.date {
-    float: right;
-    display: flex;
-}
-
-
-th,
-td {
-    border: 1px solid black;
-    background-color: aqua;
-}
-
-.header {
+header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr;
+}
+
+.logo {
+    width: 20%;
 }
 
 .title {
@@ -28,13 +21,6 @@ td {
     grid-row-end: 2;
 }
 
-.connexion {
-    grid-column-start: 5;
-    grid-column-end: 5;
-    grid-row-start: 1;
-    grid-row-end: 1;
-}
-
 .search {
     grid-column-start: 5;
     grid-column-end: 5;
@@ -42,3 +28,123 @@ td {
     grid-row-end: 2;
     display: flex;
 }
+
+.date {
+    float: right;
+    display: flex;
+}
+
+.button_header {
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    padding: 0 20px;
+    background-color: rgb(74, 68, 68);
+    text-shadow: 1px 1px 1px #000;
+    line-height: 2.5;
+    width: 100%;
+}
+
+.button_header:hover {
+    background-color: rgb(53, 49, 49);
+}
+
+/* INDEX: gère le tableau des accidents, le lien de signalisation et la date */
+
+table {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+
+th,
+td {
+    border: 1px solid black;
+    background-color: aqua;
+}
+
+#connexion {
+    grid-column-start: 5;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    height: 50%;
+}
+
+/* LOGIN: gère les champs pour s'inscrire et/ou se connecter */
+
+.login_signup_field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-top: 5px;
+}
+
+.login_signup_form {
+    display: grid;
+    justify-content: center;
+    border-radius: 10px;
+    /*background-color: #25333e;*/ /*Activer pour avoir un fond bleu (rend pas très bien pour l'instant)*/
+    padding: 20px;
+}
+
+.login_signup_button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 15px;
+    padding: 14px 20px;
+    margin: 10px 10px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+}
+
+.login_signup_button:hover {
+    background-color: #45a049;
+}
+
+/* ACCIDENT: gère les signalisations d'accident */
+
+.report {
+    display: grid;
+    justify-content: center;
+    border-radius: 10px;
+    /*background-color: #25333e;*/ /*Activer pour avoir un fond bleu (rend pas très bien pour l'instant)*/
+    padding: 20px;
+}
+
+.report_button {
+    width: 100%;
+    background-color: #B32626;
+    color: white;
+    font-size: 15px;
+    padding: 14px 14px;
+    margin: 10px 10px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+}
+
+.report_button:hover {
+    background-color: #A32322;
+}
+
+textarea {
+    resize: vertical;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+  

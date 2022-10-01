@@ -5,40 +5,44 @@
   <meta charset="utf-8">
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/logo.icon">
 </head>
 
 <body>
-  <header class="header">
-    <img src="" alt="LOGO">
+  <header>
+    <img class="logo" src="images/logo.png" alt="FML-Logo">
     <h1 class="title">FixMyLouv</h1>
 
     <div class="search">
       <input type="text" placeholder="Recherche">
-      <input type="button" value="Recherche">
+      <input class="button_header" type="button" value="Recherche">
     </div>
     <!-- Change en "depliez moi", une fois connecté -->
-    <input type="button" value="Connexion" class="connexion">
+    <input id="connexion" class="button_header" type="button" value="Connexion">
 
   </header>
+
   <hr>
   <main>
-    <p>Compte existant</p>
-    <label>Nom de l'utilisateur</label>
-    <input type="text" value=""><br>
-    <label>Mot de passe :</label>
-    <input type="password"><br>
-    <button>S'indentifier</button>
 
-    <p>Nouveau compte</p>
-    <label>Nom de l'utilisateur</label>
-    <input type="text" value=""><br>
-    <label>Mot de passe :</label>
-    <input type="password"><br>
-    <label>Nom complet</label>
-    <input type="text" value=""><br>
-    <label>Adresse e-mail</label>
-    <input type="text" value=""><br>
-    <button>S'enregistrer</button>
+    <div class="login_signup_form">
+      <div>
+        <h2>Compte existant</h2>
+        <input class="login_signup_field" type="text" placeholder="Email" required ><br>
+        <input class="login_signup_field" type="password" placeholder="Mot de passe" required><br>
+        <button class="login_signup_button" type="submit">S'indentifier</button>
+      </div>
+      
+      <div>
+        <h2>Nouveau compte</h2>
+        <input class="login_signup_field" type="text" placeholder="Nom de l'utilisateur" required><br>
+        <input class="login_signup_field" type="password" placeholder="Mot de passe" required><br>
+        <input class="login_signup_field" type="text" placeholder="Nom complet" required><br>
+        <input class="login_signup_field" type="text" placeholder="Adresse e-mail" required><br>
+        <button class="login_signup_button" type="submit">S'enregistrer</button>
+      </div>
+    </div>
+
   </main>
   <footer></footer>
 </body>
