@@ -1,16 +1,14 @@
-/* HEADER: gere le logo, titre, bouton de connexion et recherche sous forme de tableau */
-body{
-    background-image: url(/images/background.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    
-    
-    
-}
 body {
     font-family: 'Titillium Web', sans-serif;
+
+    background: url(/images/background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
+/* HEADER: gere le logo, titre, bouton de connexion et recherche sous forme de tableau */
 header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -49,7 +47,7 @@ h2 {
 .date {
     float: right;
     display: flex;
-    color: rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
 }
 
 #button_search {
@@ -98,10 +96,11 @@ td {
 }
 
 /* LOGIN: gère les champs pour s'inscrire et/ou se connecter */
-.text{
-    color: rgba(255,255,255,1);
+.text {
+    color: rgba(255, 255, 255, 1);
 
 }
+
 .login_signup_field {
     width: 100%;
     padding: 12px;
@@ -113,7 +112,7 @@ td {
 
 .login_signup_form {
     margin-left: 38%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     width: 300px;
     display: grid;
     justify-content: center;
@@ -139,8 +138,9 @@ td {
 .login_signup_button:hover {
     background-color: #45a049;
 }
-.hide{
-    
+
+.hide {
+
     width: 40px;
     height: 40px;
 }
@@ -154,7 +154,7 @@ td {
     /*background-color: #25333e;*/
     /*Activer pour avoir un fond bleu (rend pas très bien pour l'instant)*/
     padding: 20px;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     width: 300px;
     margin-left: 37%;
 }
