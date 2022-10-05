@@ -13,3 +13,23 @@ Une fois que le formulaire qura été remplie
 et que l'utilisateur sera satisfait de la description 
 il pourra alors appuyer sur le bouton "signaler" 
 Qui enverra directement le formulaire aux personnes compétantes
+
+
+
+
+Les utilisateurs ne sont pas connecté:
+
+Scénario l'utilisateur veut déclarer un accident.
+
+L'utilisateur va devoir se connecté avant de signaler un accident.
+Si l'utilisateur n'as pas de compte il s'en créera un.
+Une qu'il sera connecté à un compte l'utilisateur pourra aller sur la page "accident"
+Il remplirera le formulaire.
+En indiquant en premier l'adresse, le lieu de l'accident 
+Ensuite il donnera une description précise de l'accident 
+Une fois satisfait de la description 
+il pourra appuyer sur le bouton "signaler" 
+Qui enverra directement le formulaire aux personnes compétantes
+
+
+
