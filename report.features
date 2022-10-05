@@ -1,0 +1,15 @@
+Fonctionnalité: Report
+
+Les utilisateurs se sont déja identifier:
+
+Scénario l'utilisateur veut déclarer un accident.
+
+
+L'utilisateur se retrouve sur la page "accident"
+L'utilisateur remplie le formulaire 
+En inscrivant en premier L'adresse 
+Ensuite l'utilisateur va décrire l'accident 
+Une fois que le formulaire qura été remplie 
+et que l'utilisateur sera satisfait de la description 
+il pourra alors appuyer sur le bouton "signaler" 
+Qui enverra directement le formulaire aux personnes compétantes
