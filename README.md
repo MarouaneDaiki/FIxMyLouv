@@ -9,7 +9,7 @@ PP_v1_A11 :
 # FIxMyLouv
 06/10/2022
 
-##Contenu du projet :
+## Contenu du projet :
 -  Un dossier "images" contenant toutes les images utiles au site. 
 - Un dossier "features" contenant tous les fichiers .features décrivant plusieurs scénarios possibles ainsi que des fonctionnalités du site. 
 	1. connexion.features
