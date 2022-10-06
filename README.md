@@ -2,9 +2,9 @@ LINFO1212 - Projet d'approfondissement en sciences informatiques
 
 PP_v1_A11 : 
 
- - Senisi Lobo Marco
+- Senisi Lobo Marco
 - Schul Louis
-- ...
+- Daiki Marouane
 
 # FIxMyLouv
 06/10/2022
