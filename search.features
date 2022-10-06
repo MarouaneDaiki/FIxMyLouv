@@ -1,0 +1,11 @@
+Fonctionnalité: Rechercher
+
+Les utilisateurs peuvent rechercher des accidents à certaines adresses
+
+Scénario: L'utilisateur recherche si il y a des accidents à une certaine adresse
+
+Lorsque l'utilisateur saisit une adresse dans la barre de recherche
+Alors il verra tout les accidents qui sont se produits à cette adresse
+
+Lorsque l'utilisateur saisit un accident
+Alors il verra toutes les adresses où cet accident s'est produit
