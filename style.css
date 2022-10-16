@@ -71,6 +71,12 @@ h2 {
     width: 70%;
 }
 
+/* USED FOR THE HEADER */
+#title_link {
+    text-decoration:none;
+    color:black;
+}
+
 /* INDEX: gère le tableau des accidents, le lien de signalisation et la date */
 
 

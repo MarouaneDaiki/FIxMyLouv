@@ -6,24 +6,20 @@
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script>  
+  $(function(){ 
+    $("#header").load("header.html");  
+  }); 
+  </script> 
 </head>
 
 <body>
-  <header>
-    <img class="logo" src="images/logo.png" alt="FML-Logo">
-    <h1 class="title">FixMyLouv</h1>
-    <!-- Change en "depliez moi", une fois connecté -->
-    <input class="button_header" type="button" value="Connexion" id="connexion">
-
-    <div class="search">
-      <input type="text" placeholder="Recherche" id="input_search">
-      <input type="button" value="🔎" id="button_search">
-    </div>
-  </header>
+  <div id="header"></div>
   <hr>
 
   <main>
-    <a class="textes" href="">Signaler un accident</a>
+    <a class="textes" href="accident.html">Signaler un accident</a>
     <div class="date">
       <h3>Date actuelle:</h3>
       <!-- Afficher dynamiquement Javascript -->
