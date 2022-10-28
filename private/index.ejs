@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+  <meta charset="utf-8">
+  <title>Projet prepa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/logo.icon">
+
+  <script src="date.js"></script>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script>  
+  $(function(){ 
+    $("#header").load("header.html");
+    document.onload = date();
+  }); 
+  </script> 
+</head>
+
+<body>
+  <div id="header"></div>
+  <hr>
+
+  <main>
+    <a class="textes" href="/accident">Signaler un accident</a>
+    <div class="date">
+      <h3>Date actuelle:</h3>
+      <!-- Afficher dynamiquement Javascript -->
+      <h3><div id="current_day">Actual date</div></h3>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <table align="center">
+      <tr>
+        <th>Description</th>
+        <th>Adresse</th>
+        <th>Rapporter part</th>
+        <th>Date</th>
+      </tr>
+      <tr>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+      </tr>
+      <tr>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+        <td>Test</td>
+      </tr>
+    </table>
+  </main>
+  <footer></footer>
+</body>
+
+</html>

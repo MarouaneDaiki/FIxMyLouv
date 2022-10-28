@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+  <meta charset="utf-8">
+  <title>Projet prepa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/logo.icon">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script>  
+    $(function(){ 
+      $("#header").load("header.html");  
+    }); 
+  </script> 
+</head>
+
+<body>
+  <div id="header"></div>
+  <hr>
+
+  <main>
+
+    <div class="login_signup_form">
+      
+      <form action="/login" method="post">
+        
+        <h2 class="text">Compte existant</h2>
+        <input class="login_signup_field" type="email" name="email" placeholder="Adresse e-mail" required><br>
+        <input class="login_signup_field" type="password" name="password" placeholder="Mot de passe" required > <img class="hide" src="images/hide1.png" alt="hide logo" onclick="Change"> <br>
+        <button class="login_signup_button" type="submit" name="btn" value="login">S'indentifier</button>
+        
+      </form>
+
+      <form action="/login" method="post">
+        
+        <h2 class="text">Nouveau compte</h2>
+        <input class="login_signup_field" type="text" name="pseudo" placeholder="Nom de l'utilisateur" required><br>
+        <input class="login_signup_field" type="password" name="password" placeholder="Mot de passe" required > <img class="hide" src="images/hide1.png" alt="hide logo" onclick="Change"> <br>
+        <input class="login_signup_field" type="text" name="name" placeholder="Nom complet" required><br>
+        <input class="login_signup_field" type="email" name="email" placeholder="Adresse e-mail" required><br>
+        <button class="login_signup_button" type="submit" name="btn" value="signup">S'enregistrer</button>
+        
+      </form>
+    </div>
+
+  </main>
+  <footer></footer>
+</body>
+
+</html>
