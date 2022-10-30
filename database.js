@@ -24,41 +24,38 @@ User.init({
     }
 }, {sequelize , modelName: 'users' });
 
-
 class Email extends Model {}
 Email.init({
-  email: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        primaryKey:true,
+    email: {
+      type: DataTypes.TEXT,
+      primaryKey: true,
+      allowNull: false
     },
-  // Set FK relationship (hasMany) with `Trainer`
-  userId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id'
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: User,
+        key: 'id'
+      }
     },
-    primaryKey:true,
-  },
-  allowNull: false
 }, { sequelize, modelName: 'emails' });
-
 
 class Pseudo extends Model {}
 Pseudo.init({
-  pseudo: {
+    pseudo: {
       type: DataTypes.TEXT,
+      primaryKey: true,
       allowNull: false
-  },
-  // Set FK relationship (hasMany) with `Trainer`
-  userId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: User,
-      key: 'id'
-    }
-  }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: User,
+        key: 'id'
+      }
+    },
 }, { sequelize, modelName: 'pseudos' });
 
 
@@ -129,7 +126,7 @@ UserAccident.init({
         },
         primaryKey:true,
     }
-}, { sequelize, modelName: 'accidents' });
+}, { sequelize, modelName: 'user-accidents' });
 
 /*User.create({
     pseudo: "Me",
