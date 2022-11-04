@@ -1,4 +1,4 @@
-const { Sequelize , DataTypes , Model, Deferrable } = require('sequelize');
+const { Sequelize , DataTypes , Model, QueryTypes } = require('sequelize');
 
 // Creation of database link
 const sequelize = new Sequelize ({
@@ -128,22 +128,47 @@ UserAccident.init({
     }
 }, { sequelize, modelName: 'user-accidents' });
 
-/*User.create({
-    pseudo: "Me",
-    email: "this@gmail.com",
-    name: "Sir Me",
-    password: "GuessMe"
-});
+const DBOperations = {
+    AddUser: async function(pseudo, email, name, password){ //TODO: check input type
+        //check unique email and pseudo
+        const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", {replacements: [pseudo], type: QueryTypes.SELECT})
+        const existingEmails = await sequelize.query("SELECT COUNT(*) FROM emails WHERE email = ?", {replacements: [email], type: QueryTypes.SELECT})
 
-function AddUser(pseudo, email, name, password){
-    User.create({
-        pseudo: pseudo,
-        email: email,
-        name: name,
-        password: password
-    });
+        let amountPseudo = JSON.stringify(existingPseudos[0]).replace(/[^0-9]*/g, '');
+        let amountEmail = JSON.stringify(existingEmails[0]).replace(/[^0-9]*/g, '');
 
-    sequelize.sync();
-}*/
+        if(parseInt(amountPseudo) !== 0){
+            return "Pseudo already used";
+        }
+
+        if(parseInt(amountEmail) !== 0){
+            return "Email already used";
+        }
+
+        let newUser = await User.create({
+            name: name,
+            password: password
+        });
+
+        Email.create({
+            email: email,
+            userId: newUser.id
+        });
+
+        Pseudo.create({
+            pseudo: pseudo,
+            userId: newUser.id
+        });
+
+        sequelize.sync();
+        return "Account created";
+    },
+
+    PrintInfo: function(pseudo, email, name, password){
+        console.log("pseudo: " + pseudo + " email: " + email + " name: " + name + " password: " + password);
+    }
+}
+
+module.exports = DBOperations
 
 sequelize.sync();

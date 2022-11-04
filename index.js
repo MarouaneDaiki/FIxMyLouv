@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('./database');
+const BDop = require('./database');
 
 const app = express()
 
@@ -17,7 +17,7 @@ app.get('/index', function(req, res, next){
 });
 
 app.get('/login', function(req, res, next){
-    res.render('login.ejs')
+    res.render('login.ejs', {output : ""});
 });
 
 app.get('/accident', function(req, res, next){
@@ -29,12 +29,9 @@ app.get('/accident', function(req, res, next){
 app.post("/login", function(req, res) {
     if(req.body.btn == "signup"){
         if(req.body.pseudo == null || req.body.email == null || req.body.name == null || req.body.password == null) return;
-        
-        User.create({
-            pseudo: req.body.pseudo,
-            email: req.body.email,
-            name: req.body.name,
-            password: req.body.password
+
+        let output = BDop.AddUser(req.body.pseudo, req.body.email, req.body.name, req.body.password).then(data => {
+            res.render('login.ejs', {output : JSON.stringify(data)});
         });
 
     }else{
