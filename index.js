@@ -22,6 +22,7 @@ app.use(session({
   }));
 
 app.get('/', function(req, res, next){
+    DBop.GetAccidentInfoByID(4);
     if(req.session.userID){
         let name = DBop.GetNameById(req.session.userID).then(name =>{
             res.render('index.ejs', {user: name});

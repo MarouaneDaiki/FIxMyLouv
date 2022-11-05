@@ -208,6 +208,25 @@ const DBOperations = {
         sequelize.sync();
     },
 
+    GetAccidentInfoByID: async function(accID){
+        let accDate = await sequelize.query("SELECT date FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
+        let accDesc = await sequelize.query("SELECT description FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
+        let accLocationID = await sequelize.query("SELECT locationId FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
+
+        let accLocNB = await sequelize.query("SELECT number FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
+        let accLocStreet = await sequelize.query("SELECT street FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
+        let accLocDistrict = await sequelize.query("SELECT district FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
+
+        let accUserID = await sequelize.query("SELECT userId FROM 'user-accidents' WHERE accId = ?", {replacements: [accID], type: QueryTypes.SELECT});
+        
+        let accUserPseudo = await sequelize.query("SELECT  pseudo FROM pseudos WHERE userId = ?", {replacements: [accUserID[0]["userId"]], type: QueryTypes.SELECT});
+        
+        let accLocation =  `${accLocStreet[0]["street"]},${accLocNB[0]["number"]},${accLocDistrict[0]["district"]}`;
+
+        let infos = [accDesc[0]["description"], accLocation, accUserPseudo[0]["pseudo"], accDate[0]["date"]];
+        console.log(infos);
+    },
+
     PrintInfo: function(pseudo, email, name, password){
         console.log("pseudo: " + pseudo + " email: " + email + " name: " + name + " password: " + password);
     }
