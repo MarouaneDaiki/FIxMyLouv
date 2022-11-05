@@ -183,6 +183,15 @@ td {
     background-color: #A32322;
 }
 
+.loc {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-top: 5px;
+}
+
 textarea {
     resize: vertical;
     box-sizing: border-box;

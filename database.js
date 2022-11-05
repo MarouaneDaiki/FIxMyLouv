@@ -91,7 +91,7 @@ Accident.init({
         allowNull: false
     },
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     description: {
@@ -101,8 +101,8 @@ Accident.init({
     locationId: {
         type: DataTypes.INTEGER,
         references: {
-        model: Location,
-        key: 'id'
+            model: Location,
+            key: 'id'
         }
     }
 }, { sequelize, modelName: 'accidents' });
@@ -129,7 +129,7 @@ UserAccident.init({
 }, { sequelize, modelName: 'user-accidents' });
 
 const DBOperations = {
-    AddUser: async function(pseudo, email, name, password){ //TODO: check input type
+    AddUser: async function(pseudo, email, name, password){ //TODO: check input type HASH PASSWORD
         //check unique email and pseudo
         const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", {replacements: [pseudo], type: QueryTypes.SELECT})
         const existingEmails = await sequelize.query("SELECT COUNT(*) FROM emails WHERE email = ?", {replacements: [email], type: QueryTypes.SELECT})
@@ -162,6 +162,43 @@ const DBOperations = {
 
         sequelize.sync();
         return "Account created";
+    },
+
+    LoginUser: async function(email, password){ //HASH PASSWORD
+        const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", {replacements: [email], type: QueryTypes.SELECT});
+
+        console.log(passwordFromEmail);
+        console.log(passwordFromEmail[0]);
+
+        if(typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined'){
+            if(passwordFromEmail[0]['password'] === password){
+                return "LOGINED";
+            }
+        }
+
+        console.log("HERE");
+        return "Invalid email or password !";
+    }, 
+
+    AddAccident: async function(nb, street, district, desc, date, userID){//CHECK INFO
+        let newLocation = await Location.create({
+            number: nb,
+            street: street,
+            district: district
+        });
+
+        let newAccident = await Accident.create({
+            date: date,
+            description: desc,
+            locationId: newLocation.id
+        });
+
+        UserAccident.create({
+            accId: newAccident.id,
+            userId: userID
+        });
+
+        sequelize.sync();
     },
 
     PrintInfo: function(pseudo, email, name, password){
