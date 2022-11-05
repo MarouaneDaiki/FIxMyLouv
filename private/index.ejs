@@ -11,11 +11,23 @@
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script>  
   $(function(){ 
-    $("#header").load("header.html");
     document.onload = date();
   }); 
   </script> 
-</head>
+  <header>
+    <a href="/">
+      <img class="logo" src="images/logo.png" alt="FML-Logo">
+    </a>
+      
+    <h1 class="title"><a href="/" id="title_link">FixMyLouv</a></h1>
+  
+      <input class="button_header" type="button" value=<%= user %> id="connexion" onclick="location.href='/login';">
+  
+      <div class="search">
+        <input type="text" placeholder="Recherche" id="input_search">
+        <input type="button" value="🔎" id="button_search">
+      </div>
+  </header>
 
 <body>
   <div id="header"></div>
@@ -25,7 +37,6 @@
     <a class="textes" href="/accident">Signaler un accident</a>
     <div class="date">
       <h3>Date actuelle:</h3>
-      <!-- Afficher dynamiquement Javascript -->
       <h3><div id="current_day">Actual date</div></h3>
     </div>
     <br>

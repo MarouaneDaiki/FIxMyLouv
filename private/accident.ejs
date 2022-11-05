@@ -6,12 +6,22 @@
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script>  
-    $(function(){ 
-      $("#header").load("header.html");  
-    }); 
-  </script> 
+  
+  <script src="date.js"></script>
+  <header>
+    <a href="/">
+      <img class="logo" src="images/logo.png" alt="FML-Logo">
+    </a>
+      
+    <h1 class="title"><a href="/" id="title_link">FixMyLouv</a></h1>
+  
+      <input class="button_header" type="button" value=<%= user %> id="connexion" onclick="location.href='/login';">
+  
+      <div class="search">
+        <input type="text" placeholder="Recherche" id="input_search">
+        <input type="button" value="🔎" id="button_search">
+      </div>
+  </header>
 </head>
 
 <body>

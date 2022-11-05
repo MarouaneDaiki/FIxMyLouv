@@ -129,6 +129,16 @@ UserAccident.init({
 }, { sequelize, modelName: 'user-accidents' });
 
 const DBOperations = {
+    GetNameById: async function(id){
+        const nameFromId = await sequelize.query("SELECT name FROM users WHERE id = ?", {replacements: [id], type: QueryTypes.SELECT});
+
+        if(typeof nameFromId !== 'undefined' && typeof nameFromId[0] !== 'undefined' && typeof nameFromId[0]['name'] !== 'undefined'){
+            return nameFromId[0]["name"];
+        }
+
+        return "Connexion";
+    },
+
     AddUser: async function(pseudo, email, name, password){ //TODO: check input type HASH PASSWORD
         //check unique email and pseudo
         const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", {replacements: [pseudo], type: QueryTypes.SELECT})
@@ -167,16 +177,13 @@ const DBOperations = {
     LoginUser: async function(email, password){ //HASH PASSWORD
         const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", {replacements: [email], type: QueryTypes.SELECT});
 
-        console.log(passwordFromEmail);
-        console.log(passwordFromEmail[0]);
-
         if(typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined'){
             if(passwordFromEmail[0]['password'] === password){
-                return "LOGINED";
+                const IDuser = await sequelize.query("SELECT userId FROM emails WHERE email = ?", {replacements: [email], type: QueryTypes.SELECT});
+                return IDuser[0]['userId'];
             }
         }
 
-        console.log("HERE");
         return "Invalid email or password !";
     }, 
 
