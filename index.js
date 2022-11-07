@@ -22,7 +22,8 @@ app.use(session({
   }));
 
 app.get('/', function(req, res, next){
-    DBop.GetAccidentInfoByID(4);
+    DBop.GetAllAccidentInfo();
+
     if(req.session.userID){
         let name = DBop.GetNameById(req.session.userID).then(name =>{
             res.render('index.ejs', {user: name});
@@ -58,23 +59,32 @@ app.get('/accident', function(req, res, next){
 //POST
 
 app.post("/login", function(req, res) {
-    if(req.body.btn == "signup"){
+    if(req.body.btn == "signup"){//SIGNUP
         if(req.body.pseudo === null || req.body.email === null || req.body.name === null || req.body.password === null){
             res.render('login.ejs', {user: "Connexion", message: "Please fill all fields"});
             return;
         } 
 
+        if(DBop.CheckEmail(req.body.email)){
+            res.render('login.ejs', {user: "Connexion", message: "Enter a valid email"});
+            return;
+        }
+
         let output = DBop.AddUser(req.body.pseudo, req.body.email, req.body.name, req.body.password).then(data => {
             res.render('login.ejs', {user: "Connexion", message : data});
         });
 
-    }else{
+    }else{//LOGIN
         if(req.body.email === null || req.body.password === null){
             res.render('login.ejs', {user: "Connexion", message: "Please fill all fields"});
             return;
         } 
 
-        //login
+        if(DBop.CheckEmail(req.body.email)){
+            res.render('login.ejs', {user: "Connexion", message: "Enter a valid email"});
+            return;
+        }
+
         let output = DBop.LoginUser(req.body.email, req.body.password).then(result =>{
             if(result === "Invalid email or password !"){
                 res.render('login.ejs', {user: "Connexion", message: result});
@@ -90,7 +100,8 @@ app.post("/login", function(req, res) {
 
 app.post('/accident', function(req, res){
     if(req.session.userID){
-        if(req.body.number === null || req.body.street === null || req.body.district === null || req.body.description === null) console.log("empty");
+        if(req.body.number === null || req.body.street === null || req.body.district === null || req.body.description === null) 
+            return;
 
         let day = date.getDate();
         let month = date.getMonth() + 1;
@@ -104,7 +115,7 @@ app.post('/accident', function(req, res){
             res.render('index.ejs', {user: name});
         });
 
-        //BDop.AddAccident(req.body.number, req.body.street, req.body.district, req.body.accident, today ,11);
+        DBop.AddAccident(req.body.number, req.body.street, req.body.district, req.body.accident, today , req.session.userID);
     }else{
         res.render('login.ejs', {user: "Connexion", message: "Login before submitting accidents"});
     }
