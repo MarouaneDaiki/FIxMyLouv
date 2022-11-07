@@ -1,12 +1,13 @@
-const { Sequelize , DataTypes , Model, QueryTypes } = require('sequelize');
+const { Sequelize, DataTypes, Model, QueryTypes } = require('sequelize');
+const crypto = require('crypto')
 
 // Creation of database link
-const sequelize = new Sequelize ({
+const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage : "db.sqlite"
+    storage: "db.sqlite"
 });
 
-class User extends Model {}
+class User extends Model { }
 User.init({
     id: {
         type: DataTypes.INTEGER,
@@ -18,48 +19,48 @@ User.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
-    password:{
+    password: {
         type: DataTypes.TEXT,
         allowNull: false
     }
-}, {sequelize , modelName: 'users' });
+}, { sequelize, modelName: 'users' });
 
-class Email extends Model {}
+class Email extends Model { }
 Email.init({
     email: {
-      type: DataTypes.TEXT,
-      primaryKey: true,
-      allowNull: false
+        type: DataTypes.TEXT,
+        primaryKey: true,
+        allowNull: false
     },
     userId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      references: {
-        model: User,
-        key: 'id'
-      }
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+            model: User,
+            key: 'id'
+        }
     },
 }, { sequelize, modelName: 'emails' });
 
-class Pseudo extends Model {}
+class Pseudo extends Model { }
 Pseudo.init({
     pseudo: {
-      type: DataTypes.TEXT,
-      primaryKey: true,
-      allowNull: false
+        type: DataTypes.TEXT,
+        primaryKey: true,
+        allowNull: false
     },
     userId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      references: {
-        model: User,
-        key: 'id'
-      }
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+            model: User,
+            key: 'id'
+        }
     },
 }, { sequelize, modelName: 'pseudos' });
 
 
-class Location extends Model {}
+class Location extends Model { }
 Location.init({
     id: {
         type: DataTypes.INTEGER,
@@ -73,16 +74,16 @@ Location.init({
     },
     street: {
         type: DataTypes.TEXT,
-        allowNull:false
+        allowNull: false
     },
     district: {
         type: DataTypes.TEXT,
-        allowNull:false
+        allowNull: false
     }
 }, { sequelize, modelName: 'locations' });
 
 
-class Accident extends Model {}
+class Accident extends Model { }
 Accident.init({
     id: {
         type: DataTypes.INTEGER,
@@ -96,7 +97,7 @@ Accident.init({
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull:false
+        allowNull: false
     },
     locationId: {
         type: DataTypes.INTEGER,
@@ -108,56 +109,62 @@ Accident.init({
 }, { sequelize, modelName: 'accidents' });
 
 
-class UserAccident extends Model {}
+class UserAccident extends Model { }
 UserAccident.init({
     accId: {
-            type: DataTypes.INTEGER,
-            references: {
+        type: DataTypes.INTEGER,
+        references: {
             model: Accident,
             key: 'id'
         },
-        primaryKey:true,
+        primaryKey: true,
     },
     userId: {
-            type: DataTypes.INTEGER,
-            references: {
+        type: DataTypes.INTEGER,
+        references: {
             model: User,
             key: 'id'
         },
-        primaryKey:true,
+        primaryKey: true,
     }
 }, { sequelize, modelName: 'user-accidents' });
 
-const DBOperations = {
-    GetNameById: async function(id){
-        const nameFromId = await sequelize.query("SELECT name FROM users WHERE id = ?", {replacements: [id], type: QueryTypes.SELECT});
 
-        if(typeof nameFromId !== 'undefined' && typeof nameFromId[0] !== 'undefined' && typeof nameFromId[0]['name'] !== 'undefined'){
+async function sha256(message) {
+    const hash = crypto.createHash('sha256').update(message).digest('hex');
+    return hash
+}
+
+const DBOperations = {
+    GetNameById: async function (id) {
+        const nameFromId = await sequelize.query("SELECT name FROM users WHERE id = ?", { replacements: [id], type: QueryTypes.SELECT });
+
+        if (typeof nameFromId !== 'undefined' && typeof nameFromId[0] !== 'undefined' && typeof nameFromId[0]['name'] !== 'undefined') {
             return nameFromId[0]["name"];
         }
 
         return "Connexion";
     },
 
-    AddUser: async function(pseudo, email, name, password){ //TODO: HASH PASSWORD
+    AddUser: async function (pseudo, email, name, password) { //TODO: HASH PASSWORD
         //check unique email and pseudo
-        const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", {replacements: [pseudo], type: QueryTypes.SELECT})
-        const existingEmails = await sequelize.query("SELECT COUNT(*) FROM emails WHERE email = ?", {replacements: [email], type: QueryTypes.SELECT})
+        const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", { replacements: [pseudo], type: QueryTypes.SELECT })
+        const existingEmails = await sequelize.query("SELECT COUNT(*) FROM emails WHERE email = ?", { replacements: [email], type: QueryTypes.SELECT })
 
         let amountPseudo = JSON.stringify(existingPseudos[0]).replace(/[^0-9]*/g, '');
         let amountEmail = JSON.stringify(existingEmails[0]).replace(/[^0-9]*/g, '');
 
-        if(parseInt(amountPseudo) !== 0){
+        if (parseInt(amountPseudo) !== 0) {
             return "Pseudo already used";
         }
 
-        if(parseInt(amountEmail) !== 0){
+        if (parseInt(amountEmail) !== 0) {
             return "Email already used";
         }
 
         let newUser = await User.create({
             name: name,
-            password: password
+            password: await sha256(password)
         });
 
         Email.create({
@@ -171,23 +178,23 @@ const DBOperations = {
         });
 
         sequelize.sync();
-        return "Account created";
+        return newUser.id;
     },
 
-    LoginUser: async function(email, password){ //HASH PASSWORD
-        const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", {replacements: [email], type: QueryTypes.SELECT});
+    LoginUser: async function (email, password) { //HASH PASSWORD
+        const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", { replacements: [email], type: QueryTypes.SELECT });
 
-        if(typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined'){
-            if(passwordFromEmail[0]['password'] === password){
-                const IDuser = await sequelize.query("SELECT userId FROM emails WHERE email = ?", {replacements: [email], type: QueryTypes.SELECT});
+        if (typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined') {
+            if (passwordFromEmail[0]['password'] === await sha256(password)) {
+                const IDuser = await sequelize.query("SELECT userId FROM emails WHERE email = ?", { replacements: [email], type: QueryTypes.SELECT });
                 return IDuser[0]['userId'];
             }
         }
 
         return "Invalid email or password !";
-    }, 
+    },
 
-    AddAccident: async function(nb, street, district, desc, date, userID){
+    AddAccident: async function (nb, street, district, desc, date, userID) {
         let newLocation = await Location.create({
             number: nb,
             street: street,
@@ -208,56 +215,57 @@ const DBOperations = {
         sequelize.sync();
     },
 
-    GetAccidentInfoByID: async function(accID){
+    GetAccidentInfoByID: async function (accID) {
         const IDs = await sequelize.query("SELECT id FROM accidents");
         let allAccIDs = [IDs[0][0]["id"]]
-        
+
         for (let i = 1; i < IDs.length; i++) {
             allAccIDs.push(IDs[0][i]["id"])
         }
 
-        if(allAccIDs.includes(Number(accID))){ //id exists in db
-            let accDate = await sequelize.query("SELECT date FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
-            let accDesc = await sequelize.query("SELECT description FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
-            let accLocationID = await sequelize.query("SELECT locationId FROM accidents where id = ?", {replacements: [accID], type: QueryTypes.SELECT});
+        if (allAccIDs.includes(Number(accID))) { //id exists in db
+            let accDate = await sequelize.query("SELECT date FROM accidents where id = ?", { replacements: [accID], type: QueryTypes.SELECT });
+            let accDesc = await sequelize.query("SELECT description FROM accidents where id = ?", { replacements: [accID], type: QueryTypes.SELECT });
+            let accLocationID = await sequelize.query("SELECT locationId FROM accidents where id = ?", { replacements: [accID], type: QueryTypes.SELECT });
 
-            let accLocNB = await sequelize.query("SELECT number FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
-            let accLocStreet = await sequelize.query("SELECT street FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
-            let accLocDistrict = await sequelize.query("SELECT district FROM locations WHERE id = ?", {replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT});
+            let accLocNB = await sequelize.query("SELECT number FROM locations WHERE id = ?", { replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT });
+            let accLocStreet = await sequelize.query("SELECT street FROM locations WHERE id = ?", { replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT });
+            let accLocDistrict = await sequelize.query("SELECT district FROM locations WHERE id = ?", { replacements: [accLocationID[0]["locationId"]], type: QueryTypes.SELECT });
 
-            let accUserID = await sequelize.query("SELECT userId FROM 'user-accidents' WHERE accId = ?", {replacements: [accID], type: QueryTypes.SELECT});
-            
-            let accUserPseudo = await sequelize.query("SELECT  pseudo FROM pseudos WHERE userId = ?", {replacements: [accUserID[0]["userId"]], type: QueryTypes.SELECT});
-            
-            let accLocation =  `${accLocStreet[0]["street"]},${accLocNB[0]["number"]},${accLocDistrict[0]["district"]}`;
+            let accUserID = await sequelize.query("SELECT userId FROM 'user-accidents' WHERE accId = ?", { replacements: [accID], type: QueryTypes.SELECT });
+
+            let accUserPseudo = await sequelize.query("SELECT  pseudo FROM pseudos WHERE userId = ?", { replacements: [accUserID[0]["userId"]], type: QueryTypes.SELECT });
+
+            let accLocation = `${accLocStreet[0]["street"]},${accLocNB[0]["number"]},${accLocDistrict[0]["district"]}`;
 
             let infos = [accDesc[0]["description"], accLocation, accUserPseudo[0]["pseudo"], accDate[0]["date"]];
             return infos;
         }
     },
 
-    GetAllAccidentInfo: async function(){
-        const IDs = await sequelize.query("SELECT id FROM accidents");
-        let allAccIDReverse = [IDs[0][0]["id"]]
-        
-        for (let i = 1; i < IDs.length; i++) {
-            allAccIDReverse.push(IDs[0][i]["id"])
-        }
+    GetAllAccidentInfo: async function () {
+        // const IDs = await sequelize.query("SELECT id FROM accidents");
+        // console.log(IDs)
+        const accidents = await Accident.findAll();
 
-        let allInfos = [];
-        for (let i = 0; i < allAccIDReverse.length; i++) {
-            allInfos.push(this.GetAccidentInfoByID(allAccIDReverse[i]));
-        }
+        // if (IDs.length < 1) return;
+        // let allAccIDReverse = [IDs[0][0]["id"]]
 
-        console.log(allInfos);
+        // for (let i = 1; i < IDs.length; i++) {
+        //     allAccIDReverse.push(IDs[0][i]["id"])
+        // }
+
+        // let allInfos = [];
+        // for (let i = 0; i < allAccIDReverse.length; i++) {
+        //     allInfos.push(this.GetAccidentInfoByID(allAccIDReverse[i]));
+        // }
+
+        console.log("HERE", accidents);
     },
 
-    CheckEmail: function(email){
-        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-          
-        if (email.match(validRegex))        
-            return true;
-        return false;
+    CheckEmail: function (email) {
+        // Voir https://stackoverflow.com/a/9204568
+        return email.match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/');
     }
 }
 
