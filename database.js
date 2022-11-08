@@ -181,7 +181,7 @@ const DBOperations = {
         return newUser.id;
     },
 
-    LoginUser: async function (email, password) { 
+    LoginUser: async function (email, password) {
         const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", { replacements: [email], type: QueryTypes.SELECT });
 
         if (typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined') {
@@ -190,7 +190,7 @@ const DBOperations = {
                 return IDuser[0]['userId'];
             }
         }
-        return "Invalid email or password !";
+        return -1;
     },
 
     AddAccident: async function (nb, street, district, desc, date, userID) {

@@ -87,17 +87,17 @@ app.post("/login", async function (req, res) {
             return;
         }
 
-        let output = await DBop.LoginUser(req.body.email, req.body.password).then(result => {
-            if (result === "Invalid email or password !") {
-                res.render('login.ejs', { user: "Connexion", message: result });
-            } else {
-                req.session.userID = result;
-            }
-        });
+        let userID = await DBop.LoginUser(req.body.email, req.body.password)
+        if (userID === -1) {
+            res.render('login.ejs', { user: "Connexion", message: "Invalid email or password !" });
+            return
+        } else {
+            req.session.userID = userID;
+        }
     }
     let from = req.session.from
     if (from === undefined) from = "";
-    console.log("---->",from);
+    console.log("---->", from);
     res.redirect("/" + from);
 });
 
