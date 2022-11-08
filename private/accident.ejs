@@ -6,21 +6,20 @@
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
-  
-  <script src="date.js"></script>
+
   <header>
     <a href="/">
       <img class="logo" src="images/logo.png" alt="FML-Logo">
     </a>
-      
+
     <h1 class="title"><a href="/" id="title_link">FixMyLouv</a></h1>
-  
-      <input class="button_header" type="button" value=<%= user %> id="connexion" onclick="location.href='/login';">
-  
-      <div class="search">
-        <input type="text" placeholder="Recherche" id="input_search">
-        <input type="button" value="🔎" id="button_search">
-      </div>
+
+    <input class="button_header" type="button" value=<%=user %> id="connexion" onclick="location.href='/login';">
+
+    <div class="search">
+      <input type="text" placeholder="Recherche" id="input_search">
+      <input type="button" value="🔎" id="button_search">
+    </div>
   </header>
 </head>
 
@@ -41,14 +40,14 @@
 
         <label class="text" for="location">District: </label>
         <input class="loc" name="district" type="text" placeholder="District" required>
-  
+
         <label class="text" for="accident">Accident: </label>
         <textarea name="accident" placeholder="Expliquez l'accident" cols="25" rows="5" style="height:200px"></textarea>
-  
+
         <button class="report_button" type="submit">Signaler</button>
       </form>
 
-      
+
     </div>
 
   </main>

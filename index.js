@@ -3,10 +3,11 @@ const session = require('express-session');
 const bodyParser = require("body-parser");
 const DBop = require('./database');
 
+const Date = require("./private/date.js")
+
 const app = express()
 
-const url = require('url')
-const date = new Date();
+const today = Date.date();
 
 app.set('view engine', 'ejs');
 app.set('views', 'private');
@@ -23,17 +24,15 @@ app.use(session({
     }
 }));
 
-app.get('/', function (req, res, next) {
-    DBop.GetAllAccidentInfo();
+app.get('/', async function (req, res, next) {
+    // DBop.GetAllAccidentInfo();
+    let name = "Connexion"
+    // On modifie name uniquement si le user est co
+    if (req.session.userID) name = await DBop.GetNameById(req.session.userID);
+    const accidentsInfoList = await DBop.GetAllAccidentInfo()
+    // const table = dynamic.makeTable('index.ejs', accidentsInfoList, name)
 
-    if (req.session.userID) {
-        let name = DBop.GetNameById(req.session.userID).then(name => {
-            res.render('index.ejs', { user: name });
-        });
-
-    } else {
-        res.render('index.ejs', { user: "Connexion" });
-    }
+    res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
 });
 
 app.get('/login', function (req, res, next) {
@@ -54,19 +53,15 @@ app.get('/accident', function (req, res, next) {
         });
 
     } else {
-        res.redirect(url.format({
-            pathname: "/login",
-            query: {
-                "from": "accident",
-            }
-        }
-        ));
+        req.session.from = "accident"
+        res.redirect("/login");
     };
 });
 
 //POST
 
-app.post("/login", function (req, res) {
+app.post("/login", async function (req, res) {
+    // console.log(req.session.from)
     if (req.body.btn == "signup") {//SIGNUP
         if (req.body.pseudo === null || req.body.email === null || req.body.name === null || req.body.password === null) {
             res.render('login.ejs', { user: "Connexion", message: "Please fill all fields" });
@@ -78,12 +73,9 @@ app.post("/login", function (req, res) {
             return;
         }
 
-        let output = DBop.AddUser(req.body.pseudo, req.body.email, req.body.name, req.body.password).then(userID => {
+        let output = await DBop.AddUser(req.body.pseudo, req.body.email, req.body.name, req.body.password).then(userID => {
             // le user est valide et ajouter a la DB, on le connect directement
             req.session.userID = userID;
-            let page = req.query.from
-            if (page === undefined) page = "";
-            res.redirect("/" + page)
         });
 
     } else {//LOGIN
@@ -97,17 +89,17 @@ app.post("/login", function (req, res) {
             return;
         }
 
-        let output = DBop.LoginUser(req.body.email, req.body.password).then(result => {
+        let output = await DBop.LoginUser(req.body.email, req.body.password).then(result => {
             if (result === "Invalid email or password !") {
                 res.render('login.ejs', { user: "Connexion", message: result });
             } else {
                 req.session.userID = result;
-                let name = DBop.GetNameById(req.session.userID).then(name => {
-                    res.redirect("/")
-                });
             }
         });
     }
+    let from = req.session.from
+    if (from === undefined) from = "";
+    res.redirect("/" + from)
 });
 
 app.post('/accident', function (req, res) {
@@ -115,20 +107,11 @@ app.post('/accident', function (req, res) {
         if (req.body.number === null || req.body.street === null || req.body.district === null || req.body.description === null)
             return;
 
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-
-        let today = `${day}/${month}/${year}`;
-
-        console.log(today);
-
-        let name = DBop.GetNameById(req.session.userID).then(name => {
+        let name = DBop.AddAccident(req.body.number, req.body.street, req.body.district, req.body.accident, today, req.session.userID).then(name => {
             res.redirect("/")
-            // res.render('index.ejs', { user: name });
         });
 
-        DBop.AddAccident(req.body.number, req.body.street, req.body.district, req.body.accident, today, req.session.userID);
+        ;
     } else {
         res.redirect("/login")
         // res.render('login.ejs', { user: "Connexion", message: "Login before submitting accidents" });

@@ -238,29 +238,43 @@ const DBOperations = {
 
             let accLocation = `${accLocStreet[0]["street"]},${accLocNB[0]["number"]},${accLocDistrict[0]["district"]}`;
 
-            let infos = [accDesc[0]["description"], accLocation, accUserPseudo[0]["pseudo"], accDate[0]["date"]];
+            let infos = { description: accDesc[0]["description"], location: accLocation, user: accUserPseudo[0]["pseudo"], date: accDate[0]["date"] };
             return infos;
         }
     },
 
+    GetLocationInfo: async function (locationId) {
+        let accLocNB = await sequelize.query("SELECT number FROM locations WHERE id = ?", { replacements: [locationId], type: QueryTypes.SELECT });
+        let accLocStreet = await sequelize.query("SELECT street FROM locations WHERE id = ?", { replacements: [locationId], type: QueryTypes.SELECT });
+        let accLocDistrict = await sequelize.query("SELECT district FROM locations WHERE id = ?", { replacements: [locationId], type: QueryTypes.SELECT });
+
+        let accLocationInfo = `${accLocStreet[0]["street"]},${accLocNB[0]["number"]},${accLocDistrict[0]["district"]}`;
+
+        return accLocationInfo
+    },
+
+    GetUserFromAccidentId: async function (accID) {
+        let accUserID = await sequelize.query("SELECT userId FROM 'user-accidents' WHERE accId = ?", { replacements: [accID], type: QueryTypes.SELECT });
+        let accUserPseudo = await sequelize.query("SELECT pseudo FROM 'pseudos' WHERE userId = ?", { replacements: [accUserID[0]["userId"]], type: QueryTypes.SELECT });
+        return accUserPseudo[0]["pseudo"]
+    },
+
     GetAllAccidentInfo: async function () {
-        // const IDs = await sequelize.query("SELECT id FROM accidents");
-        // console.log(IDs)
-        const accidents = await Accident.findAll();
+        const accidentsList = await Accident.findAll();
 
-        // if (IDs.length < 1) return;
-        // let allAccIDReverse = [IDs[0][0]["id"]]
+        let allInfos = [];
+        for (const accident of accidentsList) {
+            const accidentInfo = accident.dataValues
 
-        // for (let i = 1; i < IDs.length; i++) {
-        //     allAccIDReverse.push(IDs[0][i]["id"])
-        // }
+            const date = accidentInfo.date
+            const description = accidentInfo.description
+            const user = await this.GetUserFromAccidentId(accidentInfo.id)
+            const location = await this.GetLocationInfo(accidentInfo.id)
 
-        // let allInfos = [];
-        // for (let i = 0; i < allAccIDReverse.length; i++) {
-        //     allInfos.push(this.GetAccidentInfoByID(allAccIDReverse[i]));
-        // }
-
-        console.log("HERE", accidents);
+            let info = { description: description, location: location, user: user, date: date };
+            allInfos.push(info)
+        };
+        return allInfos
     },
 
     CheckEmail: function (email) {

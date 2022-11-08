@@ -6,27 +6,27 @@
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
-
-  <script src="date.js"></script>
+  <script src="dynamic_page.js"></script>
+  <!-- <script src="date.js"></script> -->
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script>  
-  $(function(){ 
-    document.onload = date();
-  }); 
-  </script> 
+  <!-- <script>
+    $(function () {
+      document.onload = date();
+    }); 
+  </script> -->
   <header>
     <a href="/">
       <img class="logo" src="images/logo.png" alt="FML-Logo">
     </a>
-      
+
     <h1 class="title"><a href="/" id="title_link">FixMyLouv</a></h1>
-  
-      <input class="button_header" type="button" value=<%= user %> id="connexion" onclick="location.href='/login';">
-  
-      <div class="search">
-        <input type="text" placeholder="Recherche" id="input_search">
-        <input type="button" value="🔎" id="button_search">
-      </div>
+
+    <input class="button_header" type="button" value=<%=user %> id="connexion" onclick="location.href='/login';">
+
+    <div class="search">
+      <input type="text" placeholder="Recherche" id="input_search">
+      <input type="button" value="🔎" id="button_search">
+    </div>
   </header>
 
 <body>
@@ -37,12 +37,17 @@
     <a class="textes" href="/accident">Signaler un accident</a>
     <div class="date">
       <h3>Date actuelle:</h3>
-      <h3><div id="current_day">Actual date</div></h3>
+      <h3>
+        <div id="current_day">
+          <%=date %>
+        </div>
+      </h3>
     </div>
     <br>
     <br>
     <br>
     <br>
+
     <table align="center">
       <tr>
         <th>Description</th>
@@ -50,19 +55,24 @@
         <th>Rapporter part</th>
         <th>Date</th>
       </tr>
-      <tr>
-        <td>Test</td>
-        <td>Test</td>
-        <td>Test</td>
-        <td>Test</td>
-      </tr>
-      <tr>
-        <td>Test</td>
-        <td>Test</td>
-        <td>Test</td>
-        <td>Test</td>
-      </tr>
+      <% accidentsInfoList.forEach(function(accident){ %>
+        <tr>
+          <td>
+            <%= accident.description %>
+          </td>
+          <td>
+            <%= accident.location %>
+          </td>
+          <td>
+            <%= accident.user %>
+          </td>
+          <td>
+            <%= accident.date %>
+          </td>
+        </tr>
+        <% }) %>
     </table>
+
   </main>
   <footer></footer>
 </body>
