@@ -25,12 +25,10 @@ app.use(session({
 }));
 
 app.get('/', async function (req, res, next) {
-    // DBop.GetAllAccidentInfo();
     let name = "Connexion"
     // On modifie name uniquement si le user est co
     if (req.session.userID) name = await DBop.GetNameById(req.session.userID);
     const accidentsInfoList = await DBop.GetAllAccidentInfo()
-    // const table = dynamic.makeTable('index.ejs', accidentsInfoList, name)
 
     res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
 });
@@ -99,7 +97,8 @@ app.post("/login", async function (req, res) {
     }
     let from = req.session.from
     if (from === undefined) from = "";
-    res.redirect("/" + from)
+    console.log("---->",from);
+    res.redirect("/" + from);
 });
 
 app.post('/accident', function (req, res) {
@@ -114,7 +113,6 @@ app.post('/accident', function (req, res) {
         ;
     } else {
         res.redirect("/login")
-        // res.render('login.ejs', { user: "Connexion", message: "Login before submitting accidents" });
     }
 });
 

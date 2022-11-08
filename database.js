@@ -146,7 +146,7 @@ const DBOperations = {
         return "Connexion";
     },
 
-    AddUser: async function (pseudo, email, name, password) { //TODO: HASH PASSWORD
+    AddUser: async function (pseudo, email, name, password) {
         //check unique email and pseudo
         const existingPseudos = await sequelize.query("SELECT COUNT(*) FROM pseudos WHERE pseudo = ?", { replacements: [pseudo], type: QueryTypes.SELECT })
         const existingEmails = await sequelize.query("SELECT COUNT(*) FROM emails WHERE email = ?", { replacements: [email], type: QueryTypes.SELECT })
@@ -181,7 +181,7 @@ const DBOperations = {
         return newUser.id;
     },
 
-    LoginUser: async function (email, password) { //HASH PASSWORD
+    LoginUser: async function (email, password) { 
         const passwordFromEmail = await sequelize.query("SELECT password FROM users WHERE id = (SELECT userId FROM emails WHERE email = ?)", { replacements: [email], type: QueryTypes.SELECT });
 
         if (typeof passwordFromEmail !== 'undefined' && typeof passwordFromEmail[0] !== 'undefined' && typeof passwordFromEmail[0]['password'] !== 'undefined') {
@@ -190,7 +190,6 @@ const DBOperations = {
                 return IDuser[0]['userId'];
             }
         }
-
         return "Invalid email or password !";
     },
 
@@ -274,7 +273,7 @@ const DBOperations = {
             let info = { description: description, location: location, user: user, date: date };
             allInfos.push(info)
         };
-        return allInfos
+        return allInfos.reverse();
     },
 
     CheckEmail: function (email) {
