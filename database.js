@@ -214,7 +214,7 @@ const DBOperations = {
         sequelize.sync();
     },
 
-    GetAccidentInfoByID: async function (accID) {
+    /*GetAccidentInfoByID: async function (accID) {
         const IDs = await sequelize.query("SELECT id FROM accidents");
         let allAccIDs = [IDs[0][0]["id"]]
 
@@ -240,7 +240,7 @@ const DBOperations = {
             let infos = { description: accDesc[0]["description"], location: accLocation, user: accUserPseudo[0]["pseudo"], date: accDate[0]["date"] };
             return infos;
         }
-    },
+    },*/
 
     GetLocationInfo: async function (locationId) {
         let accLocNB = await sequelize.query("SELECT number FROM locations WHERE id = ?", { replacements: [locationId], type: QueryTypes.SELECT });
@@ -274,6 +274,58 @@ const DBOperations = {
             allInfos.push(info)
         };
         return allInfos.reverse();
+    },
+
+    GetAccInfoFromSearchBar: async function(location) {
+        let allInfos = [];
+
+        let fromDesc = await sequelize.query("SELECT id, date, description FROM accidents WHERE description like ?", { replacements:[location], type: QueryTypes.SELECT });
+        
+        for(const currentID of fromDesc) {
+            let desc = currentID["description"];
+            let location = await this.GetLocationInfo(currentID["id"]);
+            let user = await this.GetUserFromAccidentId(currentID["id"]);
+            let date = currentID["date"];
+
+            let info = { description: desc, location: location, user: user, date: date };
+            if(!allInfos.includes(info)) {
+                allInfos.push(info);
+            } 
+        }
+
+        let fromDistrict = await sequelize.query("SELECT id FROM locations WHERE district like ?", { replacements:[location], type: QueryTypes.SELECT });
+        
+        for(const currentLocID of fromDistrict) {
+            let accID = await sequelize.query("SELECT id, date, description FROM accidents WHERE locationId = ?", { replacements:[currentLocID["id"]], type: QueryTypes.SELECT });
+            
+            const desc = accID[0]["description"];
+            const location = await this.GetLocationInfo(currentLocID["id"]);
+            const user = await this.GetUserFromAccidentId(accID[0]["id"]);
+            const date = accID[0]["date"];   
+
+            let info = { description: desc, location: location, user: user, date: date };
+            if(!allInfos.includes(info)) {
+                allInfos.push(info);
+            } 
+        }
+
+        let fromStreet = await sequelize.query("SELECT id FROM locations WHERE street like ?", { replacements:[location], type: QueryTypes.SELECT });
+        
+        for(const currentLocID of fromStreet) {
+            let accID = await sequelize.query("SELECT id, date, description FROM accidents WHERE locationId = ?", { replacements:[currentLocID["id"]], type: QueryTypes.SELECT });
+            
+            const desc = accID[0]["description"];
+            const location = await this.GetLocationInfo(currentLocID["id"]);
+            const user = await this.GetUserFromAccidentId(accID[0]["id"]);
+            const date = accID[0]["date"];   
+
+            let info = { description: desc, location: location, user: user, date: date };
+            if(!allInfos.includes(info)) {
+                allInfos.push(info);
+            } 
+        }
+        
+        return allInfos;
     },
 
     CheckEmail: function (email) {

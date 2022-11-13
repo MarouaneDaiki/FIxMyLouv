@@ -7,13 +7,8 @@
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
   <script src="dynamic_page.js"></script>
-  <!-- <script src="date.js"></script> -->
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <!-- <script>
-    $(function () {
-      document.onload = date();
-    }); 
-  </script> -->
+
   <header>
     <a href="/">
       <img class="logo" src="images/logo.png" alt="FML-Logo">
@@ -24,9 +19,13 @@
     <input class="button_header" type="button" value=<%=user %> id="connexion" onclick="location.href='/login';">
 
     <div class="search">
-      <input type="text" placeholder="Recherche" id="input_search">
-      <input type="button" value="🔎" id="button_search">
+      <form action="/" method="get">
+        <input type="text" placeholder="Recherche" id="input_search" name="looking_for" required>
+
+        <button id="button_search" type="submit" name="btn_search" value="searching">🔎</button>
+      </form>
     </div>
+
   </header>
 
 <body>

@@ -25,12 +25,21 @@ app.use(session({
 }));
 
 app.get('/', async function (req, res, next) {
+
     let name = "Connexion"
     // On modifie name uniquement si le user est co
     if (req.session.userID) name = await DBop.GetNameById(req.session.userID);
-    const accidentsInfoList = await DBop.GetAllAccidentInfo()
 
-    res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
+    if(req.query.btn_search === "searching") { //Barre de recherche
+        let research = '%' + req.query.looking_for + '%';
+        const researchedInfo = await DBop.GetAccInfoFromSearchBar(research);
+
+        res.render('index.ejs', { user: name, date: today, accidentsInfoList: researchedInfo });
+    }else { //Page 'normal'
+        const accidentsInfoList = await DBop.GetAllAccidentInfo()
+
+        res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
+    }
 });
 
 app.get('/login', function (req, res, next) {
@@ -97,7 +106,6 @@ app.post("/login", async function (req, res) {
     }
     let from = req.session.from
     if (from === undefined) from = "";
-    console.log("---->", from);
     res.redirect("/" + from);
 });
 
