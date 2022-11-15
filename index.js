@@ -114,7 +114,9 @@ app.post('/accident', function (req, res) {
         if (req.body.number === null || req.body.street === null || req.body.district === null || req.body.description === null)
             return;
 
-        let name = DBop.AddAccident(req.body.number, req.body.street, req.body.district, req.body.accident, today, req.session.userID).then(name => {
+        let number = Math.abs(req.body.number);
+
+        let name = DBop.AddAccident(number, req.body.street, req.body.district, req.body.accident, today, req.session.userID).then(name => {
             res.redirect("/")
         });
 
