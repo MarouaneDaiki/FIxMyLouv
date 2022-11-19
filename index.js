@@ -1,3 +1,4 @@
+// Import des packages et initalisation 
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require("body-parser");
@@ -24,25 +25,27 @@ app.use(session({
     }
 }));
 
-app.get('/', async function (req, res, next) {
+//  FONCTION GET
+
+app.get('/', async function (req, res, next) { // Page d'acceuil
 
     let name = "Connexion"
-    // On modifie name uniquement si le user est co
+    // On modifie name uniquement si le user est connecter
     if (req.session.userID) name = await DBop.GetNameById(req.session.userID);
 
-    if(req.query.btn_search === "searching") { //Barre de recherche
+    if(req.query.btn_search === "searching") { // Affichage des resultat de la barre de recherche
         let research = '%' + req.query.looking_for + '%';
         const researchedInfo = await DBop.GetAccInfoFromSearchBar(research);
 
         res.render('index.ejs', { user: name, date: today, accidentsInfoList: researchedInfo });
-    }else { //Page 'normal'
+    }else { // Affichage des resultat 'normal'
         const accidentsInfoList = await DBop.GetAllAccidentInfo()
 
         res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
     }
 });
 
-app.get('/login', function (req, res, next) {
+app.get('/login', function (req, res, next) { // Page de connexion
     if (req.session.userID) {
         let name = DBop.GetNameById(req.session.userID).then(name => {
             res.render('login.ejs', { user: name, message: "" });
@@ -53,7 +56,7 @@ app.get('/login', function (req, res, next) {
     }
 });
 
-app.get('/accident', function (req, res, next) {
+app.get('/accident', function (req, res, next) { // Page d'accident
     if (req.session.userID) {
         let name = DBop.GetNameById(req.session.userID).then(name => {
             res.render('accident.ejs', { user: name });
@@ -65,11 +68,10 @@ app.get('/accident', function (req, res, next) {
     };
 });
 
-//POST
+//  FONCTION POST
 
 app.post("/login", async function (req, res) {
-    // console.log(req.session.from)
-    if (req.body.btn == "signup") {//SIGNUP
+    if (req.body.btn == "signup") {         // SIGNUP
         if (req.body.pseudo === null || req.body.email === null || req.body.name === null || req.body.password === null) {
             res.render('login.ejs', { user: "Connexion", message: "Please fill all fields" });
             return;
@@ -81,11 +83,10 @@ app.post("/login", async function (req, res) {
         }
 
         let output = await DBop.AddUser(req.body.pseudo, req.body.email, req.body.name, req.body.password).then(userID => {
-            // le user est valide et ajouter a la DB, on le connect directement
-            req.session.userID = userID;
+            req.session.userID = userID; // L'utilisateur est ajouter a la db et connecté directement
         });
 
-    } else {//LOGIN
+    } else {                                // LOGIN
         if (req.body.email === null || req.body.password === null) {
             res.render('login.ejs', { user: "Connexion", message: "Please fill all fields" });
             return;
@@ -104,12 +105,13 @@ app.post("/login", async function (req, res) {
             req.session.userID = userID;
         }
     }
+    // Redirection si necessaire
     let from = req.session.from
     if (from === undefined) from = "";
     res.redirect("/" + from);
 });
 
-app.post('/accident', function (req, res) {
+app.post('/accident', function (req, res) { // Ajout d'un accident si utilisateur connecté
     if (req.session.userID) {
         if (req.body.number === null || req.body.street === null || req.body.district === null || req.body.description === null)
             return;
