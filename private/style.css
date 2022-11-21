@@ -83,14 +83,28 @@ h2 {
 table {
     width: 50%;
     border-collapse: collapse;
+   
+}
+
+th{
+    background-color: #ecc19c;
+    border: black 2px solid;
+    font-family: Optima;
+    font-size: 30px;
+    color: #17608a; 
+    
+    
+    
+    
+    
 }
 
 
-
-th,
 td {
-    border: 1px solid rgb(49, 49, 49);
-    background-color: rgb(247, 247, 247);
+    border: 2px solid rgb(0, 0, 0);
+    background-color:#ecc19c;
+    color: #207be2;
+    
 }
 
 #connexion {
@@ -119,7 +133,7 @@ td {
 .login_signup_form {
     margin-left: 38%;
     background-color: rgba(0, 0, 0, 0.4);
-    width: 300px;
+    width: 400px;
     display: grid;
     justify-content: center;
     border-radius: 10px;
@@ -149,6 +163,7 @@ td {
 
     width: 40px;
     height: 40px;
+    
 }
 
 /* ACCIDENT: gère les signalisations d'accident */
