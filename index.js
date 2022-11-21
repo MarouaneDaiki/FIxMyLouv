@@ -3,6 +3,9 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require("body-parser");
 const DBop = require('./database');
+const https = require('https');
+const fs = require('fs');
+
 
 const Date = require("./private/date.js")
 
@@ -130,4 +133,9 @@ app.post('/accident', function (req, res) { // Ajout d'un accident si utilisateu
 
 
 app.use(express.static('private'));
-app.listen(8080);
+
+https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: 'ingi'
+  }, app).listen(8080);
