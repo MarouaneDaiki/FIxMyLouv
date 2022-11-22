@@ -6,8 +6,6 @@
   <title>Projet prepa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="images/logo.icon">
-  <script src="dynamic_page.js"></script>
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 
   <header>
     <a href="/">
@@ -28,7 +26,7 @@
 
   </header>
 
-<body>
+<body class='<%=mode %>'>
   <div id="header"></div>
   <hr>
 
@@ -49,23 +47,23 @@
 
     <table align="center">
       <tr>
-        <th>Description</th>
-        <th>Adresse</th>
-        <th>Rapporter part</th>
-        <th>Date</th>
+        <th class='<%=mode %>'>Description</th>
+        <th class='<%=mode %>'>Adresse</th>
+        <th class='<%=mode %>'>Rapporter part</th>
+        <th class='<%=mode %>'>Date</th>
       </tr>
       <% accidentsInfoList.forEach(function(accident){ %>
         <tr>
-          <td>
+          <td class='<%=mode %>'>
             <%= accident.description %>
           </td>
-          <td>
+          <td class='<%=mode %>'>
             <%= accident.location %>
           </td>
-          <td>
+          <td class='<%=mode %>'>
             <%= accident.user %>
           </td>
-          <td>
+          <td class='<%=mode %>'>
             <%= accident.date %>
           </td>
         </tr>

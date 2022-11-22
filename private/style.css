@@ -8,6 +8,11 @@ body {
     background-size: cover;
 }
 
+.dark {
+    background-color: #1d252b;
+    background-blend-mode: multiply;
+}
+
 /* HEADER: gere le logo, titre, bouton de connexion et recherche sous forme de tableau */
 header {
     display: grid;
@@ -72,8 +77,8 @@ h2 {
 
 /* USED FOR THE HEADER */
 #title_link {
-    text-decoration:none;
-    color:black;
+    text-decoration: none;
+    color: black;
 }
 
 /* INDEX: gère le tableau des accidents, le lien de signalisation et la date */
@@ -82,18 +87,17 @@ table {
     border-collapse: collapse;
 }
 
-th{
+th {
     background-color: #ecc19c;
     border: black 2px solid;
     font-family: Optima;
     font-size: 30px;
-    color: #17608a; 
+    color: #17608a;
 }
-
 
 td {
     border: 2px solid rgb(0, 0, 0);
-    background-color:#ecc19c;
+    background-color: #ecc19c;
     color: #207be2;
 }
 
@@ -107,6 +111,10 @@ td {
 
 /* LOGIN: gère les champs pour s'inscrire et/ou se connecter */
 .text {
+    color: rgba(255, 255, 255, 1);
+}
+
+h2 {
     color: rgba(255, 255, 255, 1);
 }
 

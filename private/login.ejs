@@ -23,11 +23,11 @@
         <button id="button_search" type="submit" name="btn_search" value="searching">🔎</button>
       </form>
     </div>
-    
+
   </header>
 </head>
 
-<body>
+<body class='<%=mode %>'>
   <div id="header"></div>
   <hr>
 
@@ -43,34 +43,35 @@
 
         <h2 class="text">Compte existant</h2>
         <input class="login_signup_field" type="email" name="email" placeholder="Adresse e-mail" required><br>
-        <input class="login_signup_field" type="password" name="password" placeholder="Mot de passe" required id="lock"> 
-        <img src="images/hide1.png" class="hide" id="hide" alt="hide password" onclick="change()" />  
+        <input class="login_signup_field" type="password" name="password" placeholder="Mot de passe" required id="lock">
+        <img src="images/hide1.png" class="hide" id="hide" alt="hide password" onclick="change()" />
         <br>
         <button class="login_signup_button" type="submit" name="btn" value="login">S'indentifier</button>
-        
+
       </form>
       <script>
-        i= true
-        function change(){
+        i = true
+        function change() {
           if (i) {
-            document.getElementById('lock').setAttribute("type",Text);
-            document.getElementById('hide').src="/images/NotHide1.png";
-            i=false;
+            document.getElementById('lock').setAttribute("type", Text);
+            document.getElementById('hide').src = "/images/NotHide1.png";
+            i = false;
           }
-          else{
-            document.getElementById('lock').setAttribute("type","password");
-            document.getElementById('hide').src="/images/hide1.png";
-            i=true;
-          }  
+          else {
+            document.getElementById('lock').setAttribute("type", "password");
+            document.getElementById('hide').src = "/images/hide1.png";
+            i = true;
           }
+        }
       </script>
 
       <form action="/login" method="post">
 
         <h2 class="text">Nouveau compte</h2>
         <input class="login_signup_field" type="text" name="pseudo" placeholder="Nom de l'utilisateur" required><br>
-        <input class="login_signup_field" id="lock1" type="password" name="password" placeholder="Mot de passe" required> 
-        <img class="hide" src="images/hide1.png" alt="hide logo" id="hide1" onclick="change1()"/>
+        <input class="login_signup_field" id="lock1" type="password" name="password" placeholder="Mot de passe"
+          required>
+        <img class="hide" src="images/hide1.png" alt="hide logo" id="hide1" onclick="change1()" />
         <br>
         <input class="login_signup_field" type="text" name="name" placeholder="Nom complet" required><br>
         <input class="login_signup_field" type="email" name="email" placeholder="Adresse e-mail" required><br>
@@ -78,19 +79,19 @@
 
       </form>
       <script>
-        i= true
-        function change1(){
+        i = true
+        function change1() {
           if (i) {
-            document.getElementById('lock1').setAttribute("type",Text);
-            document.getElementById('hide1').src="/images/NotHide1.png";
-            i=false;
+            document.getElementById('lock1').setAttribute("type", Text);
+            document.getElementById('hide1').src = "/images/NotHide1.png";
+            i = false;
           }
-          else{
-            document.getElementById('lock1').setAttribute("type","password");
-            document.getElementById('hide1').src="/images/hide1.png";
-            i=true;
-          }  
+          else {
+            document.getElementById('lock1').setAttribute("type", "password");
+            document.getElementById('hide1').src = "/images/hide1.png";
+            i = true;
           }
+        }
       </script>
     </div>
 

@@ -7,11 +7,9 @@ const https = require('https');
 const fs = require('fs');
 
 
-const Date = require("./private/date.js")
+const DynamicFunction = require("./private/dynamicPage.js")
 
 const app = express()
-
-const today = Date.date();
 
 app.set('view engine', 'ejs');
 app.set('views', 'private');
@@ -36,15 +34,16 @@ app.get('/', async function (req, res, next) { // Page d'acceuil
     // On modifie name uniquement si le user est connecter
     if (req.session.userID) name = await DBop.GetNameById(req.session.userID);
 
-    if(req.query.btn_search === "searching") { // Affichage des resultat de la barre de recherche
+    const today = DynamicFunction.getDate();
+    if (req.query.btn_search === "searching") { // Affichage des resultat de la barre de recherche
         let research = '%' + req.query.looking_for + '%';
         const researchedInfo = await DBop.GetAccInfoFromSearchBar(research);
 
         res.render('index.ejs', { user: name, date: today, accidentsInfoList: researchedInfo });
-    }else { // Affichage des resultat 'normal'
+    } else { // Affichage des resultat 'normal'
         const accidentsInfoList = await DBop.GetAllAccidentInfo()
-
-        res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList });
+        const mode = DynamicFunction.getMode()
+        res.render('index.ejs', { user: name, date: today, accidentsInfoList: accidentsInfoList, mode: mode });
     }
 });
 
@@ -55,14 +54,16 @@ app.get('/login', function (req, res, next) { // Page de connexion
         });
 
     } else {
-        res.render('login.ejs', { user: "Connexion", message: "" });
+        const mode = DynamicFunction.getMode()
+        res.render('login.ejs', { user: "Connexion", message: "", mode: mode });
     }
 });
 
 app.get('/accident', function (req, res, next) { // Page d'accident
     if (req.session.userID) {
+        const mode = DynamicFunction.getMode()
         let name = DBop.GetNameById(req.session.userID).then(name => {
-            res.render('accident.ejs', { user: name });
+            res.render('accident.ejs', { user: name, mode: mode });
         });
 
     } else {
@@ -120,7 +121,7 @@ app.post('/accident', function (req, res) { // Ajout d'un accident si utilisateu
             return;
 
         let number = Math.abs(req.body.number);
-
+        const today = DynamicFunction.getDate();
         let name = DBop.AddAccident(number, req.body.street, req.body.district, req.body.accident, today, req.session.userID).then(name => {
             res.redirect("/")
         });
@@ -138,4 +139,4 @@ https.createServer({
     key: fs.readFileSync('./key.pem'),
     cert: fs.readFileSync('./cert.pem'),
     passphrase: 'ingi'
-  }, app).listen(8080);
+}, app).listen(8080);
